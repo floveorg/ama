@@ -67,6 +67,20 @@ a:hover{text-decoration:underline}
 .hero .lead{font-size:1rem;color:var(--ink-soft);max-width:48ch;margin:0 auto 20px}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
+/* ============ CATEGORIES ============ */
+.categories-row{display:flex;justify-content:center;padding:8px 12px 16px;gap:8px;flex-wrap:wrap}
+.cat-icon{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;cursor:pointer;padding:10px 8px;border-radius:18px;min-width:72px;
+  border:1.5px solid transparent;transition:all .15s;
+  background:linear-gradient(150deg,var(--cream),rgba(248,187,208,.3))}
+.cat-icon:hover{border-color:var(--base-2);transform:translateY(-1px)}
+.cat-icon.active{background:linear-gradient(150deg,#fff,var(--base));
+  border-color:var(--magenta);box-shadow:0 4px 12px rgba(233,30,138,.15)}
+.cat-emoji{font-size:1.6rem;line-height:1}
+.cat-label{font-size:.78rem;font-weight:600;color:var(--ink-soft);letter-spacing:.2px}
+.cat-icon.active .cat-label{color:var(--ink)}
+@media(max-width:420px){.cat-icon{min-width:58px;padding:8px 4px}.cat-emoji{font-size:1.3rem}.cat-label{font-size:.7rem}}
+
 /* ============ SECTIONS ============ */
 .section{margin:32px 0}
 .section-head{max-width:60ch;margin:0 auto 16px;text-align:center}
@@ -127,6 +141,42 @@ a:hover{text-decoration:underline}
 .paginator button{padding:4px 12px;border:1.5px solid var(--base-2);border-radius:999px;
   background:var(--cream);font-size:.75rem;cursor:pointer}
 .paginator button.on{background:var(--ink);color:white;border-color:var(--ink)}
+
+/* ============ ADD FORM ============ */
+.add-form{background:white;border:1.5px solid rgba(42,24,16,.08);
+  border-radius:var(--r);padding:20px;margin:24px 0;box-shadow:0 2px 12px var(--shadow)}
+.add-form-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.add-form-header h3{font-family:var(--disp);font-weight:700;font-size:1.1rem}
+.add-form-tools{display:flex;gap:6px}
+.add-form-tools button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--base-2);
+  background:var(--cream);cursor:pointer;display:grid;place-items:center;font-size:1rem;
+  transition:all .12s;color:var(--ink)}
+.add-form-tools button:hover{background:var(--magenta);color:white;border-color:var(--magenta)}
+.add-form-tools button.recording{background:#fb7185;color:white;border-color:#fb7185;
+  animation:addPulse 1.4s infinite}
+@keyframes addPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,113,133,.45)}50%{box-shadow:0 0 0 8px rgba(251,113,133,0)}}
+.add-textarea{width:100%;min-height:80px;resize:vertical;padding:12px 14px;
+  border:2px solid var(--base-2);border-radius:var(--r);font-family:var(--body);
+  font-size:.95rem;background:var(--cream);outline:none;transition:border-color .15s;
+  color:var(--ink)}
+.add-textarea::placeholder{color:#bbb}
+.add-textarea:focus{border-color:var(--magenta)}
+.add-cats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.add-cat-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;
+  border:1.5px solid var(--base-2);border-radius:999px;font-size:.78rem;
+  font-weight:600;background:var(--cream);cursor:pointer;transition:all .15s;
+  font-family:var(--body);color:var(--ink)}
+.add-cat-btn:hover{border-color:var(--magenta);color:var(--magenta)}
+.add-cat-btn.active{background:var(--magenta);color:white;border-color:var(--magenta)}
+.add-submit-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px}
+.add-submit{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;
+  border:2px solid var(--magenta);border-radius:var(--r);font-family:var(--body);
+  font-weight:700;font-size:.9rem;cursor:pointer;transition:all .15s;
+  background:var(--magenta);color:white}
+.add-submit:hover{transform:translateY(-1px);box-shadow:3px 3px 0 var(--shadow);
+  background:var(--grape);border-color:var(--grape)}
+.add-submit:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.add-hint{font-size:.75rem;color:var(--ink-soft)}
 
 /* ============ AUTHOR PAGE ============ */
 #userpage{background:white;border:1.5px solid rgba(42,24,16,.08);
@@ -250,6 +300,53 @@ a:hover{text-decoration:underline}
     </div>
   </section>
 
+  <!-- CATEGORIES -->
+  <div class="categories-row" id="categoriesRow">
+    <div class="cat-icon active" data-cat="palabras" role="button" tabindex="0" aria-pressed="true">
+      <span class="cat-emoji">🗣️</span><span class="cat-label">Palabras</span>
+    </div>
+    <div class="cat-icon" data-cat="tiempo" role="button" tabindex="0" aria-pressed="false">
+      <span class="cat-emoji">⏳</span><span class="cat-label">Tiempo</span>
+    </div>
+    <div class="cat-icon" data-cat="servicio" role="button" tabindex="0" aria-pressed="false">
+      <span class="cat-emoji">🤲</span><span class="cat-label">Servicio</span>
+    </div>
+    <div class="cat-icon" data-cat="regalos" role="button" tabindex="0" aria-pressed="false">
+      <span class="cat-emoji">🎁</span><span class="cat-label">Regalos</span>
+    </div>
+    <div class="cat-icon" data-cat="contacto" role="button" tabindex="0" aria-pressed="false">
+      <span class="cat-emoji">🫂</span><span class="cat-label">Contacto</span>
+    </div>
+  </div>
+
+  <!-- ADD FORM -->
+  <section class="section" id="add-section">
+    <div class="wrap">
+      <div class="add-form" id="addForm">
+        <div class="add-form-header">
+          <h3>💗 Nuevo amor</h3>
+          <div class="add-form-tools">
+            <button type="button" id="addMicBtn" title="Grabar audio">🎤</button>
+            <button type="button" id="addVideoBtn" title="Adjuntar vídeo">📹</button>
+            <button type="button" id="addPhotoBtn" title="Adjuntar foto">📷</button>
+          </div>
+        </div>
+        <textarea class="add-textarea" id="addTextInput" placeholder="Escribe tu mensaje de amor…" maxlength="280"></textarea>
+        <div class="add-cats" id="addCatBtns">
+          <button type="button" class="add-cat-btn active" data-cat="palabras">🗣️ Palabras</button>
+          <button type="button" class="add-cat-btn" data-cat="tiempo">⏳ Tiempo</button>
+          <button type="button" class="add-cat-btn" data-cat="servicio">🤲 Servicio</button>
+          <button type="button" class="add-cat-btn" data-cat="regalos">🎁 Regalos</button>
+          <button type="button" class="add-cat-btn" data-cat="contacto">🫂 Contacto</button>
+        </div>
+        <div class="add-submit-row">
+          <span class="add-hint">Tu amor será anónimo hasta que lo reclames.</span>
+          <button class="add-submit" id="addSubmitBtn" disabled>Enviar al bot →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- GENTE PLAYER -->
   <section class="section" id="gente">
     <div class="wrap">
@@ -335,10 +432,21 @@ const RISA_URL = window.Ama.RISA_URL;
 const TELEGRAM_BOT = window.Ama.TELEGRAM_BOT;
 const LICENSE = window.Ama.LICENSE;
 
+/* ============ CATEGORIES ============ */
+const CATS = {
+  palabras: {emoji:'🗣️', label:'Palabras', rootTags:['amor','ánimo','felicitación','gratitud','encouragement','palabras']},
+  tiempo:   {emoji:'⏳', label:'Tiempo',   rootTags:['tiempo','llamada','visita','paseo','momento']},
+  servicio: {emoji:'🤲', label:'Servicio', rootTags:['servicio','ayuda','apoyo','arreglo','cuidado']},
+  regalos:  {emoji:'🎁', label:'Regalos',  rootTags:['regalo','sorpresa','donación','regalo']},
+  contacto: {emoji:'🫂', label:'Contacto', rootTags:['contacto','abrazo','caricia','beso','abraza']}
+};
+
 /* ============ STATE ============ */
 let amors = [];
 let risaClips = [];
 let selected = new Set();
+let activeCategory = 'palabras';
+let addCategory = 'palabras';
 let favs = new Set(JSON.parse(localStorage.getItem('ama-liberada-favs')||'[]'));
 
 /* ============ HELPERS ============ */
@@ -346,6 +454,19 @@ function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
 function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show')},1800); }
 function isVideo(c){ return /\.(mp4|webm|mov|m4v|ogv)$/i.test(String(c.src||'')); }
 function timeAgo(d){ var days=Math.floor((Date.now()-new Date(d))/86400000); if(days===0)return'hoy'; if(days===1)return'ayer'; if(days<7)return'hace '+days+'d'; if(days<30)return'hace '+Math.floor(days/7)+'sem'; return'hace '+Math.floor(days/30)+'m'; }
+
+/* ============ CATEGORY MATCHING ============ */
+function clipMatchesCategory(clip, cat) {
+  if (!cat) return true;
+  var rootTags = CATS[cat].rootTags;
+  var clipTags = (clip.tags||'').toLowerCase().split(',').map(function(t){return t.trim()});
+  for (var i = 0; i < rootTags.length; i++) {
+    for (var j = 0; j < clipTags.length; j++) {
+      if (clipTags[j].indexOf(rootTags[i]) >= 0 || rootTags[i].indexOf(clipTags[j]) >= 0) return true;
+    }
+  }
+  return false;
+}
 
 /* ============ PLAYER FACTORY ============ */
 function createPlayer(root, opts){
@@ -450,10 +571,23 @@ var gentePlayer = createPlayer(document.getElementById('gente-player'),{
   titleEl:document.getElementById('gente-title')
 });
 
+/* ============ CATEGORIES FILTER ============ */
+document.querySelectorAll('#categoriesRow .cat-icon').forEach(function(el){
+  el.addEventListener('click',function(){
+    document.querySelectorAll('#categoriesRow .cat-icon').forEach(function(c){
+      c.classList.remove('active');c.setAttribute('aria-pressed','false');
+    });
+    el.classList.add('active');el.setAttribute('aria-pressed','true');
+    activeCategory = el.dataset.cat;
+    applyFilters();
+  });
+});
+
 /* ============ TAGS ============ */
 function buildTags(){
   var counts={};
-  amors.forEach(function(c){(c.tags||'').split(',').forEach(function(t){
+  var filtered = amors.filter(function(c){ return clipMatchesCategory(c, activeCategory); });
+  filtered.forEach(function(c){(c.tags||'').split(',').forEach(function(t){
     t=t.trim();if(!t)return;counts[t]=(counts[t]||0)+1;
   })});
   var space=document.getElementById('tag-space');
@@ -473,12 +607,18 @@ function buildTags(){
 
 function applyFilters(){
   var filtered=amors.filter(function(c){
+    if(!clipMatchesCategory(c, activeCategory)) return false;
     if(selected.size===0)return true;
     var tags=(c.tags||'').split(',').map(function(t){return t.trim()});
     for(var s of selected){if(tags.indexOf(s)>=0)return true}
     return false;
   });
-  gentePlayer.select(filtered,'Amores de la gente');
+  var catLabel = CATS[activeCategory] ? CATS[activeCategory].label : 'Amores';
+  var title = selected.size > 0
+    ? catLabel + ' · ' + Array.from(selected).join(', ')
+    : catLabel + ' — amores de la gente';
+  gentePlayer.select(filtered, title);
+  buildTags();
 }
 
 /* ============ SEARCH ============ */
@@ -486,6 +626,7 @@ document.getElementById('tag-search-input').addEventListener('input',function(){
   var q=this.value.toLowerCase().trim();
   if(!q){applyFilters();return}
   var filtered=amors.filter(function(c){
+    if(!clipMatchesCategory(c, activeCategory)) return false;
     return(c.t||'').toLowerCase().indexOf(q)>=0||
            (c.name||'').toLowerCase().indexOf(q)>=0||
            (c.tags||'').toLowerCase().indexOf(q)>=0;
@@ -537,9 +678,47 @@ Promise.all([
   risaClips=window.Ama.risaOf(results[0]);
   if(!risaClips.length && Array.isArray(results[1])) risaClips=results[1];
 
-  gentePlayer.select(amors,'Amores de la gente');
-  buildTags();
+  applyFilters();
   renderUserPage();
+});
+
+/* ============ ADD FORM ============ */
+var addTextInput = document.getElementById('addTextInput');
+var addSubmitBtn = document.getElementById('addSubmitBtn');
+
+addTextInput.addEventListener('input',function(){
+  addSubmitBtn.disabled = !this.value.trim();
+});
+
+document.querySelectorAll('#addCatBtns .add-cat-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('#addCatBtns .add-cat-btn').forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+    addCategory = btn.dataset.cat;
+  });
+});
+
+addSubmitBtn.addEventListener('click',function(){
+  var text = addTextInput.value.trim();
+  if(!text) return;
+  var cat = CATS[addCategory] ? CATS[addCategory].label : addCategory;
+  var botMsg = '🏷️ ' + cat + '\n\n' + text;
+  var url = TELEGRAM_BOT + '?start=' + encodeURIComponent(botMsg);
+  window.open(url, '_blank');
+  addTextInput.value = '';
+  addSubmitBtn.disabled = true;
+  toast('Abriendo bot de Ama…');
+});
+
+/* mic / video / photo buttons → open bot */
+document.getElementById('addMicBtn').addEventListener('click',function(){
+  window.open(TELEGRAM_BOT, '_blank');
+});
+document.getElementById('addVideoBtn').addEventListener('click',function(){
+  window.open(TELEGRAM_BOT, '_blank');
+});
+document.getElementById('addPhotoBtn').addEventListener('click',function(){
+  window.open(TELEGRAM_BOT, '_blank');
 });
 
 /* ============ FAVORITES ============ */
