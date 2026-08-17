@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ama liberada · el ejercicio de amar</title>
+<meta name="description" content="Ama liberada — comparte amor, voz y cariño con la comunidad">
+<meta property="og:title" content="Ama liberada">
+<meta property="og:description" content="El ejercicio de amar — comparte amor, voz y cariño">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💗</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Figtree:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#2a1810; --ink-soft:#5a3a28;
+  --base:#fce4ec; --base-2:#f8bbd0; --cream:#fff8f9;
+  --pink:#f472b6; --magenta:#e91e8a;
+  --purple:#9b5de5; --grape:#5b2fa0;
+  --azure:#1d6fe0; --mint:#12b28a;
+  --marigold:#ffb020;
+  --shadow:rgba(58,26,10,.12);
+  --r:22px; --maxw:1080px;
+  --disp:'Baloo 2',system-ui,sans-serif;
+  --body:'Figtree',system-ui,sans-serif;
+  --mono:'Space Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--cream);color:var(--ink);line-height:1.55;
+  background-image:radial-gradient(circle at 20% 10%,var(--base) 0%,transparent 50%),
+                    radial-gradient(circle at 80% 90%,var(--base-2) 0%,transparent 40%);
+  min-height:100vh}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+a{color:var(--magenta);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ============ TOPBAR ============ */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(255,248,249,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1.5px solid rgba(42,24,16,.06);padding:10px 0}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--disp);
+  font-weight:800;font-size:1.3rem;color:var(--ink);text-decoration:none}
+.brand-emoji{font-size:1.5rem}
+.brand-group{display:flex;gap:8px;align-items:center}
+
+/* ============ BUTTONS ============ */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;
+  border:2px solid var(--ink);border-radius:var(--r);font-family:var(--body);
+  font-weight:600;font-size:.85rem;cursor:pointer;transition:all .15s;
+  text-decoration:none;background:var(--cream);color:var(--ink)}
+.btn:hover{transform:translateY(-1px);box-shadow:3px 3px 0 var(--shadow);text-decoration:none}
+.btn-primary{background:var(--magenta);color:white;border-color:var(--magenta)}
+.btn-primary:hover{background:var(--grape);border-color:var(--grape)}
+.btn-ghost{background:transparent;border-color:transparent}
+.btn-ghost:hover{background:var(--base)}
+.btn-sm{padding:5px 12px;font-size:.78rem;border-radius:14px}
+.btn-grape{background:var(--purple);color:white;border-color:var(--purple)}
+
+/* ============ HERO ============ */
+.hero{text-align:center;padding:48px 20px 32px}
+.hero-logo{font-size:3.5rem;margin-bottom:8px}
+.hero h1{font-family:var(--disp);font-weight:800;font-size:2.2rem;margin-bottom:4px}
+.hero .lead{font-size:1rem;color:var(--ink-soft);max-width:48ch;margin:0 auto 20px}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* ============ SECTIONS ============ */
+.section{margin:32px 0}
+.section-head{max-width:60ch;margin:0 auto 16px;text-align:center}
+.section-head h2{font-family:var(--disp);font-weight:700;font-size:1.4rem;margin-bottom:4px}
+.section-head p{font-size:.9rem;color:var(--ink-soft)}
+
+/* ============ GENTE PLAYER ============ */
+.gente-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:24px;align-items:start}
+.tag-col{position:sticky;top:72px}
+#tag-search-input{width:100%;padding:10px 14px;border:2px solid var(--base-2);
+  border-radius:var(--r);font-family:var(--body);font-size:.9rem;background:var(--cream);
+  outline:none;transition:border-color .15s}
+#tag-search-input:focus{border-color:var(--magenta)}
+.tag-space{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;min-height:60px}
+.tag-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;
+  border:1.5px solid var(--base-2);border-radius:999px;font-size:.78rem;
+  font-weight:600;background:var(--cream);cursor:pointer;transition:all .15s;
+  user-select:none;white-space:nowrap}
+.tag-chip:hover{border-color:var(--magenta);color:var(--magenta)}
+.tag-chip.on{background:var(--magenta);color:white;border-color:var(--magenta)}
+.tag-chip .tc-count{font-size:.65rem;opacity:.7}
+
+.player-col{background:white;border:1.5px solid rgba(42,24,16,.08);
+  border-radius:var(--r);padding:16px;box-shadow:0 2px 12px var(--shadow)}
+.title-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.title-head h3{font-family:var(--disp);font-weight:700;font-size:1.1rem}
+.transport{display:flex;gap:6px;align-items:center}
+.transport button{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--base-2);
+  background:var(--cream);cursor:pointer;display:grid;place-items:center;font-size:.85rem;
+  transition:all .12s}
+.transport button:hover{background:var(--magenta);color:white;border-color:var(--magenta)}
+.transport button.playing{background:var(--magenta);color:white;border-color:var(--magenta)}
+.media-toggle{display:flex;gap:4px}
+.media-toggle button{padding:4px 10px;border:1.5px solid var(--base-2);border-radius:999px;
+  background:var(--cream);font-size:.72rem;font-weight:600;cursor:pointer;color:#999;
+  transition:all .12s}
+.media-toggle button.on{background:var(--ink);color:white;border-color:var(--ink)}
+
+/* Tracklist */
+.tracklist{list-style:none}
+.trackitem{display:flex;align-items:center;gap:10px;padding:10px 8px;
+  border-bottom:1px solid rgba(42,24,16,.05);cursor:pointer;transition:background .1s;
+  border-radius:8px}
+.trackitem:hover{background:var(--base)}
+.trackitem.active{background:var(--base-2)}
+.track-num{font-size:.7rem;color:#bbb;width:18px;text-align:center;flex-shrink:0}
+.track-body{flex:1;min-width:0}
+.track-title{font-weight:600;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track-meta{font-size:.72rem;color:#999}
+.track-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.track-tag{font-size:.62rem;padding:1px 7px;background:var(--base);border-radius:999px;color:#888}
+.track-actions{display:flex;gap:6px;align-items:center;flex-shrink:0}
+.track-actions button{background:none;border:none;cursor:pointer;font-size:.85rem;
+  color:#ccc;padding:2px;transition:color .12s}
+.track-actions button:hover{color:var(--magenta)}
+.track-actions .fav-on{color:var(--marigold)}
+.paginator{display:flex;gap:6px;justify-content:center;margin-top:12px}
+.paginator button{padding:4px 12px;border:1.5px solid var(--base-2);border-radius:999px;
+  background:var(--cream);font-size:.75rem;cursor:pointer}
+.paginator button.on{background:var(--ink);color:white;border-color:var(--ink)}
+
+/* ============ AUTHOR PAGE ============ */
+#userpage{background:white;border:1.5px solid rgba(42,24,16,.08);
+  border-radius:var(--r);padding:24px;margin:16px 0;box-shadow:0 2px 12px var(--shadow)}
+.up-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.up-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--purple));
+  display:grid;place-items:center;font-size:1.8rem;color:white;font-weight:700;flex-shrink:0}
+.up-info h2{font-family:var(--disp);font-weight:700;font-size:1.3rem}
+.up-info .up-key{font-size:.8rem;color:#999}
+.up-info .up-bio{font-size:.88rem;color:var(--ink-soft);margin-top:4px}
+.up-links{display:flex;gap:12px;margin-top:8px}
+.up-links a{font-size:.8rem;display:flex;align-items:center;gap:4px}
+.up-links a svg{width:14px;height:14px}
+.up-crosslink{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;
+  border:1.5px solid var(--purple);border-radius:999px;font-size:.78rem;font-weight:600;
+  color:var(--purple);background:transparent;cursor:pointer;transition:all .15s;margin-top:12px}
+.up-crosslink:hover{background:var(--purple);color:white;text-decoration:none}
+.up-extender{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;
+  border:2px solid var(--magenta);border-radius:var(--r);font-size:.85rem;font-weight:700;
+  color:white;background:var(--magenta);cursor:pointer;transition:all .15s;margin-top:12px}
+.up-extender:hover{transform:translateY(-1px);box-shadow:3px 3px 0 var(--shadow)}
+
+/* ============ SHARE ============ */
+.share-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.share-card{display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 12px;
+  background:white;border:1.5px solid rgba(42,24,16,.08);border-radius:var(--r);
+  cursor:pointer;transition:all .15s;text-align:center}
+.share-card:hover{transform:translateY(-2px);box-shadow:4px 4px 0 var(--shadow)}
+.share-card .share-icon{font-size:1.8rem}
+.share-card .share-label{font-size:.82rem;font-weight:600}
+
+/* ============ TABS (bottom) ============ */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(255,248,249,.92);backdrop-filter:blur(12px);
+  border-top:1.5px solid rgba(42,24,16,.06);display:flex;justify-content:center;gap:0}
+.tab-bar .tab-btn{flex:none;padding:10px 16px;border:none;background:none;
+  font-family:var(--body);font-size:.78rem;font-weight:600;color:#999;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .12s}
+.tab-bar .tab-btn.active{color:var(--magenta);border-bottom-color:var(--magenta)}
+.tab-bar .tab-btn:hover{color:var(--ink)}
+.tab-panel{display:none;padding:24px 0 80px}
+.tab-panel.active{display:block}
+
+/* ============ FOOTER ============ */
+.site-footer{padding:32px 0 100px;text-align:center;font-size:.78rem;color:#bbb}
+.site-footer a{color:var(--magenta)}
+
+/* ============ MODAL ============ */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(42,24,16,.5);z-index:200;
+  place-items:center}
+.modal-bg.open{display:grid}
+.modal-box{background:var(--cream);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--shadow);
+  padding:32px;max-width:420px;width:90%;text-align:center;position:relative;border-radius:var(--r)}
+.modal-box h3{font-family:var(--disp);font-size:1.2rem;margin-bottom:8px}
+.modal-box p{font-size:.9rem;color:var(--ink-soft);margin-bottom:16px}
+.modal-close{position:absolute;top:10px;right:14px;background:none;border:none;
+  font-size:1.4rem;cursor:pointer;color:#999}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:720px){
+  .gente-grid{grid-template-columns:1fr}
+  .tag-col{position:static}
+  .hero h1{font-size:1.7rem}
+}
+@media(max-width:420px){
+  .hero h1{font-size:1.4rem}
+  .topbar .brand span{display:none}
+}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:white;padding:10px 20px;border-radius:999px;
+  font-size:.82rem;font-weight:600;z-index:300;opacity:0;transition:opacity .2s;
+  pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ============ TOPBAR ============ -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="brand-emoji">💗</span> <span>Ama</span></a>
+    <div class="brand-group">
+      <a class="btn btn-sm" href="https://risa.liberada.net" target="_blank">😹 Risa</a>
+      <button class="btn btn-primary btn-sm" id="open-upload">Publicar amor</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- AUTHOR PAGE -->
+  <section id="userpage" hidden>
+    <div class="wrap">
+      <div class="up-header">
+        <div class="up-avatar" id="up-avatar"></div>
+        <div class="up-info">
+          <h2 id="up-name"></h2>
+          <div class="up-key" id="up-key"></div>
+          <div class="up-bio" id="up-bio"></div>
+          <div class="up-links" id="up-links"></div>
+          <a class="up-crosslink" id="up-crosslink" href="#" target="_blank">😹 Ver en Risa</a>
+          <button class="up-extender" id="up-extender" style="display:none">💗 Extender a Ama</button>
+        </div>
+      </div>
+      <div class="player" id="up-player">
+        <ul class="tracklist" id="up-tracks"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-logo">💗</div>
+    <h1>Ama liberada</h1>
+    <p class="lead">El ejercicio de amar — comparte amor, voz y cariño con la comunidad.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" id="hero-upload">Publicar amor</button>
+      <a class="btn" href="https://t.me/AmaLiberadaBot" target="_blank">Telegram</a>
+    </div>
+  </section>
+
+  <!-- GENTE PLAYER -->
+  <section class="section" id="gente">
+    <div class="wrap">
+      <div class="gente-grid">
+        <div class="tag-col">
+          <input id="tag-search-input" placeholder="Buscar tags, títulos, autores…">
+          <div id="tag-space" class="tag-space"></div>
+        </div>
+        <div class="player-col">
+          <div class="title-head">
+            <h3 id="gente-title">Amores de la gente</h3>
+            <div class="transport">
+              <button id="gente-prev" title="Anterior">◀</button>
+              <button id="gente-play" title="Play/Pausa">▶</button>
+              <button id="gente-next" title="Siguiente">▶</button>
+            </div>
+          </div>
+          <div class="player" id="gente-player">
+            <ul class="tracklist"></ul>
+            <div class="paginator"></div>
+            <audio preload="none"></audio>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHARE -->
+  <section class="section" id="comparte">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Expande el amor</h2>
+        <p>Comparte Ama liberada con quien quieras.</p>
+      </div>
+      <div class="share-grid">
+        <div class="share-card" id="share-tg"><div class="share-icon">✈</div><div class="share-label">Telegram</div></div>
+        <div class="share-card" id="share-wa"><div class="share-icon">💬</div><div class="share-label">WhatsApp</div></div>
+        <div class="share-card" id="share-copy"><div class="share-icon">🔗</div><div class="share-label">Copiar link</div></div>
+        <div class="share-card" id="share-native"><div class="share-icon">↗</div><div class="share-label">Compartir</div></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- TABS -->
+<nav class="tab-bar">
+  <button class="tab-btn active" data-tab="gente">Amores</button>
+  <button class="tab-btn" data-tab="comparte">Compartir</button>
+</nav>
+
+<!-- MODAL: UPLOAD -->
+<div class="modal-bg" id="upload-modal">
+  <div class="modal-box">
+    <button class="modal-close" id="upload-close">×</button>
+    <h3>💗 Publicar amor</h3>
+    <p>Graba un audio o sube un vídeo desde tu dispositivo. Tu amor será anónimo hasta que lo reclames.</p>
+    <div style="display:flex;gap:8px;justify-content:center">
+      <a class="btn btn-primary" href="https://t.me/AmaLiberadaBot" target="_blank">Abrir bot</a>
+      <button class="btn" id="upload-cancel">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>ama liberada — <a href="https://liberada.net">liberada.net</a> · <a href="https://risa.liberada.net">Risa</a></p>
+    <p style="margin-top:4px">CC BY-SA 4.0 · <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">licencia</a></p>
+  </div>
+</footer>
+
+<script src="ama.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ============ CONFIG ============ */
+const AMA_URL = window.Ama.AMA_URL;
+const RISA_URL = window.Ama.RISA_URL;
+const TELEGRAM_BOT = window.Ama.TELEGRAM_BOT;
+const LICENSE = window.Ama.LICENSE;
+
+/* ============ STATE ============ */
+let amors = [];
+let risaClips = [];
+let selected = new Set();
+let favs = new Set(JSON.parse(localStorage.getItem('ama-liberada-favs')||'[]'));
+
+/* ============ HELPERS ============ */
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){t.classList.remove('show')},1800); }
+function isVideo(c){ return /\.(mp4|webm|mov|m4v|ogv)$/i.test(String(c.src||'')); }
+function timeAgo(d){ var days=Math.floor((Date.now()-new Date(d))/86400000); if(days===0)return'hoy'; if(days===1)return'ayer'; if(days<7)return'hace '+days+'d'; if(days<30)return'hace '+Math.floor(days/7)+'sem'; return'hace '+Math.floor(days/30)+'m'; }
+
+/* ============ PLAYER FACTORY ============ */
+function createPlayer(root, opts){
+  var audio = root.querySelector('audio');
+  var list = root.querySelector('.tracklist');
+  var pager = root.querySelector('.paginator');
+  var tracks = [], page = 0, current = -1, playing = false;
+  var PAGE = opts.pageSize || 10;
+
+  function render(){
+    list.innerHTML = '';
+    var start = page * PAGE;
+    var slice = tracks.slice(start, start + PAGE);
+    slice.forEach(function(t, i){
+      var idx = start + i;
+      var li = document.createElement('li');
+      li.className = 'trackitem' + (idx === current ? ' active' : '');
+      var vid = isVideo(t.clip);
+      li.innerHTML = '<span class="track-num">'+(idx+1)+'</span>' +
+        '<div class="track-body"><div class="track-title">'+esc(t.t) +
+          (vid ? ' <span style="font-size:.6rem;padding:1px 5px;background:var(--purple);color:white;border-radius:4px;vertical-align:middle">VIDEO</span>' : '') +
+          (t.key ? ' <a href="#/u/'+esc(t.key)+'" style="font-size:.7rem;color:var(--magenta)">@'+esc(t.key)+'</a>' : '') +
+        '</div>' +
+        '<div class="track-meta">'+esc(t.by)+'</div>' +
+        '<div class="track-tags">'+(t.tags||'').split(',').map(function(g){return '<span class="track-tag">'+esc(g.trim())+'</span>'}).join('')+'</div></div>' +
+        '<div class="track-actions">' +
+          '<button class="fav-btn'+(favs.has(t.src)?' fav-on':'')+'" data-src="'+esc(t.src)+'">'+(favs.has(t.src)?'⭐':'☆')+'</button>' +
+          '<button class="share-btn" data-t="'+esc(t.t)+'" data-src="'+esc(t.src)+'">↗</button>' +
+        '</div>';
+      li.addEventListener('click', function(e){
+        if(e.target.closest('.fav-btn')||e.target.closest('.share-btn'))return;
+        select(idx);
+      });
+      list.appendChild(li);
+    });
+    renderPager();
+    if(opts.onRender) opts.onRender(tracks);
+  }
+
+  function renderPager(){
+    if(!pager) return;
+    pager.innerHTML='';
+    var total = Math.ceil(tracks.length/PAGE);
+    if(total<=1) return;
+    for(var i=0;i<total;i++){
+      var b=document.createElement('button');
+      b.textContent=i+1;
+      b.className=i===page?'on':'';
+      b.addEventListener('click', (function(p){return function(){page=p;render()}})(i));
+      pager.appendChild(b);
+    }
+  }
+
+  function select(idx){
+    if(idx<0||idx>=tracks.length) return;
+    current=idx;
+    var t=tracks[idx];
+    audio.src=t.src;
+    audio.play();
+    playing=true;
+    updatePlayBtn();
+    render();
+    if(opts.playBtn) opts.playBtn.textContent='⏸';
+  }
+
+  function togglePlay(){
+    if(!tracks.length) return;
+    if(playing){audio.pause();playing=false;if(opts.playBtn)opts.playBtn.textContent='▶'}
+    else if(current<0){select(0)}
+    else{audio.play();playing=true;if(opts.playBtn)opts.playBtn.textContent='⏸'}
+  }
+
+  function prev(){if(current>0)select(current-1)}
+  function next(){if(current<tracks.length-1)select(current+1)}
+
+  function updatePlayBtn(){if(opts.playBtn)opts.playBtn.textContent=playing?'⏸':'▶'}
+
+  audio.addEventListener('ended',function(){playing=false;updatePlayBtn();next()});
+
+  if(opts.playBtn) opts.playBtn.addEventListener('click',togglePlay);
+  if(opts.prevBtn) opts.prevBtn.addEventListener('click',prev);
+  if(opts.nextBtn) opts.nextBtn.addEventListener('click',next);
+
+  function selectTracks(arr,title){
+    tracks=window.Ama.buildAmaTracks(arr);
+    page=0;current=-1;playing=false;audio.pause();audio.src='';
+    if(opts.titleEl) opts.titleEl.textContent=title||'Amores de la gente';
+    updatePlayBtn();
+    selected.clear();
+    render();
+  }
+
+  return{select:selectTracks,render:render,getTracks:function(){return tracks}};
+}
+
+/* ============ INIT PLAYERS ============ */
+var gentePlayer = createPlayer(document.getElementById('gente-player'),{
+  playBtn:document.getElementById('gente-play'),
+  prevBtn:document.getElementById('gente-prev'),
+  nextBtn:document.getElementById('gente-next'),
+  pageSize:10,
+  titleEl:document.getElementById('gente-title')
+});
+
+/* ============ TAGS ============ */
+function buildTags(){
+  var counts={};
+  amors.forEach(function(c){(c.tags||'').split(',').forEach(function(t){
+    t=t.trim();if(!t)return;counts[t]=(counts[t]||0)+1;
+  })});
+  var space=document.getElementById('tag-space');
+  space.innerHTML='';
+  Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]}).forEach(function(tag){
+    var chip=document.createElement('button');
+    chip.className='tag-chip'+(selected.has(tag)?' on':'');
+    chip.innerHTML=esc(tag)+' <span class="tc-count">'+counts[tag]+'</span>';
+    chip.addEventListener('click',function(){
+      if(selected.has(tag))selected.delete(tag);else selected.add(tag);
+      chip.classList.toggle('on',selected.has(tag));
+      applyFilters();
+    });
+    space.appendChild(chip);
+  });
+}
+
+function applyFilters(){
+  var filtered=amors.filter(function(c){
+    if(selected.size===0)return true;
+    var tags=(c.tags||'').split(',').map(function(t){return t.trim()});
+    for(var s of selected){if(tags.indexOf(s)>=0)return true}
+    return false;
+  });
+  gentePlayer.select(filtered,'Amores de la gente');
+}
+
+/* ============ SEARCH ============ */
+document.getElementById('tag-search-input').addEventListener('input',function(){
+  var q=this.value.toLowerCase().trim();
+  if(!q){applyFilters();return}
+  var filtered=amors.filter(function(c){
+    return(c.t||'').toLowerCase().indexOf(q)>=0||
+           (c.name||'').toLowerCase().indexOf(q)>=0||
+           (c.tags||'').toLowerCase().indexOf(q)>=0;
+  });
+  gentePlayer.select(filtered,'Resultados: '+q);
+});
+
+/* ============ AUTHOR PAGE #/u/<key> ============ */
+function renderUserPage(){
+  var m=/^#\/u\/(.+)$/.exec(location.hash||'');
+  var key=m?decodeURIComponent(m[1]):'';
+  var sec=document.getElementById('userpage');
+  sec.hidden=!key;
+  if(!key)return;
+
+  var mine=amors.filter(function(c){return c.key===key});
+  var risaMine=risaClips.filter(function(c){return c.key===key});
+  var name=mine.length?mine[0].name:key;
+  var allClips=mine.concat(risaMine);
+
+  document.getElementById('up-avatar').textContent=name.charAt(0).toUpperCase();
+  document.getElementById('up-name').textContent=name;
+  document.getElementById('up-key').textContent='@'+key;
+  document.getElementById('up-bio').textContent=mine.length?mine[0].tags||'':'';
+  document.getElementById('up-links').innerHTML=
+    '<a href="https://risa.liberada.net/#/u/'+esc(key)+'" target="_blank">😹 Ver en Risa</a>';
+
+  var crosslink=document.getElementById('up-crosslink');
+  crosslink.href='https://risa.liberada.net/#/u/'+esc(key);
+  crosslink.style.display=risaMine.length?'inline-flex':'none';
+
+  var extender=document.getElementById('up-extender');
+  extender.style.display=mine.length?'none':'inline-flex';
+  extender.onclick=function(){
+    window.location.href='https://liberada.net/usa/'+key+'/';
+  };
+
+  gentePlayer.select(allClips,name+' · todos sus amores');
+}
+
+window.addEventListener('hashchange',renderUserPage);
+
+/* ============ DATA FETCH ============ */
+Promise.all([
+  fetch(AMA_URL,{cache:'no-store'}).then(function(r){return r.ok?r.json():{clips:[]}}).catch(function(){return{clips:[]}}),
+  fetch(RISA_URL,{cache:'no-store'}).then(function(r){return r.ok?r.json():[]}).catch(function(){return[]})
+]).then(function(results){
+  amors=window.Ama.clipsOf(results[0]);
+  risaClips=window.Ama.risaOf(results[0]);
+  if(!risaClips.length && Array.isArray(results[1])) risaClips=results[1];
+
+  gentePlayer.select(amors,'Amores de la gente');
+  buildTags();
+  renderUserPage();
+});
+
+/* ============ FAVORITES ============ */
+document.addEventListener('click',function(e){
+  var f=e.target.closest('.fav-btn');
+  if(f){
+    var src=f.dataset.src;
+    if(favs.has(src)){favs.delete(src);f.textContent='☆';f.classList.remove('fav-on')}
+    else{favs.add(src);f.textContent='⭐';f.classList.add('fav-on')}
+    localStorage.setItem('ama-liberada-favs',JSON.stringify([...favs]));
+    e.stopPropagation();
+  }
+  var s=e.target.closest('.share-btn');
+  if(s){
+    var url=s.dataset.src||location.href;
+    var txt=s.dataset.t||'Ama liberada';
+    if(navigator.share){navigator.share({title:txt,url:url})}
+    else{navigator.clipboard.writeText(url);toast('Copiado')}
+    e.stopPropagation();
+  }
+});
+
+/* ============ SHARE ============ */
+document.getElementById('share-tg').addEventListener('click',function(){
+  window.open('https://t.me/share/url?url='+encodeURIComponent(location.href)+'&text='+encodeURIComponent('Ama liberada 💗'),' _blank');
+});
+document.getElementById('share-wa').addEventListener('click',function(){
+  window.open('https://wa.me/?text='+encodeURIComponent('Ama liberada 💗 '+location.href),'_blank');
+});
+document.getElementById('share-copy').addEventListener('click',function(){
+  navigator.clipboard.writeText(location.href);toast('Copiado');
+});
+document.getElementById('share-native').addEventListener('click',function(){
+  if(navigator.share)navigator.share({title:'Ama liberada',url:location.href});
+});
+
+/* ============ TABS ============ */
+var tabBtns=document.querySelectorAll('.tab-bar .tab-btn');
+tabBtns.forEach(function(btn){
+  btn.addEventListener('click',function(){
+    tabBtns.forEach(function(b){b.classList.remove('active')});
+    btn.classList.add('active');
+    var id=btn.dataset.tab;
+    document.querySelectorAll('.section').forEach(function(s){s.style.display='none'});
+    var target=document.getElementById(id);
+    if(target)target.style.display='';
+    if(id==='gente')document.getElementById('userpage').hidden=!(location.hash||'').match(/^#\/u\//);
+  });
+});
+
+/* ============ UPLOAD MODAL ============ */
+function openUpload(){document.getElementById('upload-modal').classList.add('open')}
+function closeUpload(){document.getElementById('upload-modal').classList.remove('open')}
+document.getElementById('open-upload').addEventListener('click',openUpload);
+document.getElementById('hero-upload').addEventListener('click',openUpload);
+document.getElementById('upload-close').addEventListener('click',closeUpload);
+document.getElementById('upload-cancel').addEventListener('click',closeUpload);
+document.getElementById('upload-modal').addEventListener('click',function(e){if(e.target===e.currentTarget)closeUpload()});
+
+/* ============ ESC KEY ============ */
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeUpload()}
+});
+
+})();
+</script>
+</body>
+</html>
