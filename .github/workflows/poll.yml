@@ -2,57 +2,42 @@ name: Ama bot
 on:
   schedule:
     - cron: '*/10 * * * *'
-  workflow_dispatch:
-
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: ama-poll
+  cancel-in-progress: true
 jobs:
   poll:
     runs-on: ubuntu-latest
     timeout-minutes: 70
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm ci
-        working-directory: bot
-      - name: Load env
-        run: |
-          cat bot/.env >> "$GITHUB_ENV"
-      - name: Resolve mod group ID
-        run: |
-          # First run: resolve the invite link to get the chat ID
-          if [ ! -f state/.modgroupid ]; then
-            TOKEN=$(echo "$TELEGRAM_BOT_TOKEN")
-            CHAT=$(curl -s "https://api.telegram.org/bot${TOKEN}/getChat?chat_id=https://t.me/+Xq9_lYeXvKVjMjNk" | node -e "
-              const d=require('fs').readFileSync(0,'utf8');
-              const j=JSON.parse(d);
-              if(j.ok) process.stdout.write(String(j.result.id));
-              else { console.error(j); process.exit(1); }
-            ")
-            echo "$CHAT" > state/.modgroupid
-            echo "Resolved mod group ID: $CHAT"
-          fi
-          MOD_GROUP_ID=$(cat state/.modgroupid)
-          echo "MOD_GROUP_ID=$MOD_GROUP_ID" >> "$GITHUB_ENV"
-      - name: Patch config.json
-        run: |
-          node -e "
-            const fs=require('fs');
-            const cfg=JSON.parse(fs.readFileSync('bot/config.json','utf8'));
-            cfg.modGroupId=process.env.MOD_GROUP_ID;
-            fs.writeFileSync('bot/config.json',JSON.stringify(cfg,null,2)+'\n');
-          "
-      - name: Run bot
-        working-directory: bot
+        with: { node-version: '22' }
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Run the bot
         env:
-          TELEGRAM_BOT_TOKEN: ${{ env.TELEGRAM_BOT_TOKEN }}
-          TG_ID_SECRET: ${{ env.TG_ID_SECRET }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ github.token }}
+          TG_ID_SECRET: ${{ secrets.TG_ID_SECRET }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
           R2_BUCKET: ${{ secrets.R2_BUCKET }}
           R2_PUBLIC_BASE: ${{ secrets.R2_PUBLIC_BASE }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node poll.mjs
+        run: node bot/poll.mjs
+      - name: Commit any changes
+        run: |
+          git config user.name 'ama bot'
+          git config user.email 'bot@users.noreply.github.com'
+          if ! git diff --quiet; then
+            git add ama.json state/
+            git commit -m "ama: publish/moderate (automated)"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          else
+            echo "no changes"
+          fi
