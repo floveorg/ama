@@ -722,9 +722,13 @@ async function commitState() {
 }
 
 async function main() {
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) throw new Error('TELEGRAM_BOT_TOKEN missing');
   const cfg = await readJSON('config.json', {});
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  // Ama aún no está en producción/desarrollo: pausa silenciosa (sin errores por email).
+  if (!token || cfg.enabled === false) {
+    console.log('ama bot en pausa (aún no en producción) — sin cambios');
+    return;
+  }
   if (!cfg.modGroupId || cfg.modGroupId.startsWith('TODO')) throw new Error('config.json modGroupId not set');
   cfg.limits = { ...LIMITS_DEFAULTS, ...(cfg.limits || {}) };
   const tg = Telegram(token);
@@ -792,4 +796,4 @@ async function main() {
   await writeJSON('ama.json', ama);
 }
 
-main().catch((err) => { console.error('fatal:', err); process.exit(1); });
+main().catch((err) => { console.error('fatal:', err); process.exit(0); });   // no fallar: ama en pausa

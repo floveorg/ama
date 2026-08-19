@@ -1,7 +1,6 @@
 name: Ama bot
 on:
-  schedule:
-    - cron: '*/10 * * * *'
+  # schedule: '*/10 * * * *'  # pausado: ama aún no está en producción (evita errores por email)
   workflow_dispatch: {}
 permissions:
   contents: write
